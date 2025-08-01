@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plâtre & Facturation - Outil Professionnel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        .shadow-custom {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .input-focus:focus {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+        }
+        .print-area {
+            display: none;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-area {
+                display: block !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-trowel text-3xl"></i>
+                    <h1 class="text-2xl font-bold">OmarPlâtre</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#calculateur" class="hover:text-indigo-200 transition">Calculateur</a>
+                    <a href="#facturation" class="hover:text-indigo-200 transition">Facturation</a>
+                    <a href="#historique" class="hover:text-indigo-200 transition">Historique</a>
+                </nav>
+                <button class="md:hidden text-2xl" id="menuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden gradient-bg text-white py-4 px-4 shadow-lg">
+        <div class="flex flex-col space-y-3">
+            <a href="#calculateur" class="hover:text-indigo-200 transition">Calculateur</a>
+            <a href="#facturation" class="hover:text-indigo-200 transition">Facturation</a>
+            <a href="#historique" class="hover:text-indigo-200 transition">Historique</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="mb-12 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Outil Professionnel de Calcul et Facturation pour Plâtriers</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Optimisez votre temps et vos coûts avec notre calculateur de plâtre et système de facturation intégré.</p>
+        </section>
+
+        <!-- Calculator Section -->
+        <section id="calculateur" class="mb-16">
+            <div class="bg-white rounded-xl shadow-custom p-6">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-calculator mr-3 text-indigo-600"></i> Calculateur de Plâtre
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Surface Input -->
+                    <div>
+                        <label class="block text-gray-700 mb-2 font-medium">Dimensions de la surface</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-gray-600 text-sm mb-1">Longueur (m)</label>
+                                <input type="number" id="longueur" class="w-full px-4 py-2 border rounded-lg focus:outline-none input-focus" placeholder="0.00" step="0.01">
+                            </div>
+                            <div>
+                                <label class="block text-gray-600 text-sm mb-1">Largeur (m)</label>
+                                <input type="number" id="largeur" class="w-full px-4 py-2 border rounded-lg focus:outline-none input-focus" placeholder="0.00" step="0.01">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="block text-gray-600 text-sm mb-1">Hauteur (m) - pour murs</label>
+                            <input type="number" id="hauteur" class="w-full px-4 py-2 border rounded-lg focus:outline-none input-focus" placeholder="0.00" step="0.01">
+                        </div>
+                    </div>
+                    
+                    <!-- Parameters -->
+                    <div>
+                        <label class="block text-gray-700 mb-2 font-medium">Paramètres</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-gray-600 text-sm mb-1">Épaisseur (cm)</label>
+                                <select id="epaisseur" class="w-full px-4 py-2 border rounded-lg focus:outline-none input-focus">
+                                    <option value="1">1 cm</option>
+                                    <option value="1.5" selected>1.5 cm</option>
+                                    <option value="2">2 cm</option>
+                                    <option value="2.5">2.5 cm</option>
+                                    <option value="3">3 cm</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-600 text-sm mb-1">Type de surface</label>
+                                <select id="typeSurface" class="w-full px-4 py-2 border rounded-lg focus:outline-none input-focus">
+                                    <option value="mur">Mur</option>
+                                    <option value="plafond">Plafond</option>
+                                    <option value="sol">Sol</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" id="angle" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <span class="ml-2 text-gray-600">Présence d'angles complexes</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Calculate Button -->
+                <div class="mt-8 text-center">
+                    <button id="calculerPlatre" class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition shadow-md">
+                        <i class="fas fa-calculator mr-2"></i> Calculer les besoins
+                    </button>
+                </div>
+                
+                <!-- Results -->
+                <div id="resultatsPlatre" class="mt-8 hidden bg-indigo-50 rounded-lg p-6">
+                    <h4 class="text-xl font-semibold text-gray-800 mb-4">Résultats du calcul</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <p class="text-gray-600">Surface totale</p>
+                            <p id="surfaceTotale" class="text-2xl font-bold text-indigo-600">0 m²</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <p class="text-gray-600">Quantité de plâtre</p>
+                            <p id="quantitePlatre" class="text-2xl font-bold text-indigo-600">0 kg</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <p class="text-gray-600">Temps estimé</p>
+                            <p id="tempsEstime" class="text-2xl font-bold text-indigo-600">0 h</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 bg-white p-4 rounded-lg shadow">
+                        <p class="text-gray-600">Recommandation</p>
+                        <p id="recommandation" class="text-indigo-600">-</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Billing Section -->
+        <section id="facturation" class="mb-16">
+            <div class="bg-white rounded-xl shadow-custom p-6">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-file-invoice-dollar mr-3 text-indigo-600"></i> Facturation
+                </h3>
+                
+                <!-- Client Info -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-medium text-gray-700 mb-3">Informations client</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-600 text-sm mb-1">Nom</label>
+                            <input type="text" id="clientNom" class="w-full px-4 py-2 border rounded-lg focus:outline-none input-focus" placeholder="Nom du client">
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 text-sm mb-1">Téléphone</label>
+                            <input type="tel" id="clientTel" class="w-full px-4 py-2 border rounded-lg focus:outline-none input-focus" placeholder="Numéro de téléphone">
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 text-sm mb-1">Email</label>
+                            <input type="email" id="clientEmail" class="w-full px-4 py-2 border rounded-lg focus:outline-none input-focus" placeholder="Email du client">
+                        </div>
+                        <div>
+                            <label class="block text-gray-600 text-sm mb-1">Adresse</label>
+                            <input type="text" id="clientAdresse" class="w-full px-4 py-2 border rounded-lg focus:outline-none input-focus" placeholder="Adresse du projet">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Items Table -->
+                <div class="mb-6">
+                    <h4 class="text-lg font-medium text-gray-700 mb-3">Articles</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="py-3 px-4 text-left text-gray-600">Description</th>
+                                    <th class="py-3 px-4 text-left text-gray-600">Quantité</th>
+                                    <th class="py-3 px-4 text-left text-gray-600">Prix unitaire</th>
+                                    <th class="py-3 px-4 text-left text-gray-600">Total</th>
+                                    <th class="py-3 px-4 text-left text-gray-600">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="itemsTable">
+                                <!-- Items will be added here -->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="py-3 px-4">
+                                        <button id="addItem" class="text-indigo-600 hover:text-indigo-800 flex items-center">
+                                            <i class="fas fa-plus-circle mr-2"></i> Ajouter un article
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Totals -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <label class="block text-gray-600 text-sm mb-1">Remise</label>
+                        <div class="flex">
+                            <input type="number" id="remise" class="w-full px-4 py-2 border rounded-l-lg focus:outline-none input-focus" placeholder="0" value="0">
+                            <span class="bg-gray-200 px-4 py-2 rounded-r-lg">%</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <label class="block text-gray-600 text-sm mb-1">TVA</label>
+                        <select id="tva" class="w-full px-4 py-2 border rounded-lg focus:outline-none input-focus">
+                            <option value="20">20%</option>
+                            <option value="10">10%</option>
+                            <option value="5.5">5.5%</option>
+                            <option value="2.1">2.1%</option>
+                            <option value="0">0%</option>
+                        </select>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <label class="block text-gray-600 text-sm mb-1">Total TTC</label>
+                        <p id="totalTTC" class="text-2xl font-bold text-indigo-600">0.00 MAD</p>
+                    </div>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex flex-wrap gap-4">
+                    <button id="genererFacture" class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition shadow-md">
+                        <i class="fas fa-file-pdf mr-2"></i> Générer facture
+                    </button>
+                    <button id="enregistrerProjet" class="bg-indigo-100 text-indigo-700 px-6 py-3 rounded-lg font-medium hover:bg-indigo-200 transition">
+                        <i class="fas fa-save mr-2"></i> Enregistrer
+                    </button>
+                    <button id="nouvelleFacture" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-300 transition">
+                        <i class="fas fa-plus mr-2"></i> Nouveau
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Invoice Preview (Hidden until generated) -->
+        <div id="facturePreview" class="hidden print-area bg-white p-8 rounded-lg shadow-lg mb-8">
+            <div class="flex justify-between items-start mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-indigo-600">PlâtrePro</h2>
+                    <p class="text-gray-600">Tamansourt , chatre 7</p>
+                    <p class="text-gray-600">Tél: 06 36 41 34 71</p>
+                    <p class="text-gray-600">SIRET: 123 456 789 00010</p>
+                </div>
+                <div class="text-right">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">FACTURE</h1>
+                    <p class="text-gray-600">N° <span id="factureNumero">2025001</span></p>
+                    <p class="text-gray-600">Date: <span id="factureDate">01/01/2025</span></p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Client</h3>
+                    <p id="factureClientNom" class="font-medium">-</p>
+                    <p id="factureClientAdresse" class="text-gray-600">-</p>
+                    <p id="factureClientContact" class="text-gray-600">-</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Projet</h3>
+                    <p id="factureProjet" class="text-gray-600">Travaux de plâtre</p>
+                    <p id="factureAdresseProjet" class="text-gray-600">-</p>
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <table class="min-w-full border-collapse">
+                    <thead>
+                        <tr class="border-b-2 border-gray-200">
+                            <th class="py-3 px-4 text-left text-gray-700">Description</th>
+                            <th class="py-3 px-4 text-right text-gray-700">Quantité</th>
+                            <th class="py-3 px-4 text-right text-gray-700">Prix unitaire</th>
+                            <th class="py-3 px-4 text-right text-gray-700">Total HT</th>
+                        </tr>
+                    </thead>
+                    <tbody id="factureItems">
+                        <!-- Items will be added here -->
+                    </tbody>
+                    <tfoot>
+                        <tr class="border-t border-gray-200">
+                            <td colspan="3" class="py-3 px-4 text-right text-gray-700 font-medium">Total HT</td>
+                            <td id="factureTotalHT" class="py-3 px-4 text-right">0.00 MAD</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="py-3 px-4 text-right text-gray-700 font-medium">Remise</td>
+                            <td id="factureRemise" class="py-3 px-4 text-right">0.00 MAD</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="py-3 px-4 text-right text-gray-700 font-medium">TVA <span id="factureTauxTVA">20</span>%</td>
+                            <td id="factureTVA" class="py-3 px-4 text-right">0.00 MAD</td>
+                        </tr>
+                        <tr class="border-t-2 border-gray-300">
+                            <td colspan="3" class="py-3 px-4 text-right text-gray-800 font-bold">Total TTC</td>
+                            <td id="factureTotalTTC" class="py-3 px-4 text-right font-bold text-indigo-600">0.00 MAD</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <div class="text-center text-gray-500 text-sm mt-12">
+                <p>Paiement à réception de facture - RIB disponible sur demande</p>
+                <p class="mt-1"></p>
+                <p class="mt-2">Merci pour votre confiance !</p>
+            </div>
+        </div>
+
+        <!-- History Section -->
+        <section id="historique" class="mb-16">
+            <div class="bg-white rounded-xl shadow-custom p-6">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-history mr-3 text-indigo-600"></i> Historique des projets
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="py-3 px-4 text-left text-gray-600">Date</th>
+                                <th class="py-3 px-4 text-left text-gray-600">Client</th>
+                                <th class="py-3 px-4 text-left text-gray-600">Surface</th>
+                                <th class="py-3 px-4 text-left text-gray-600">Montant</th>
+                                <th class="py-3 px-4 text-left text-gray-600">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTable">
+                            <!-- History items will be added here -->
+                            <tr>
+                                <td colspan="5" class="py-4 text-center text-gray-500">Aucun projet enregistré</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-trowel text-2xl"></i>
+                        <h2 class="text-xl font-bold">PlâtrePro</h2>
+                    </div>
+                    <p class="mt-2 text-indigo-200">Outil professionnel pour les plâtriers</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-indigo-200 transition"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="hover:text-indigo-200 transition"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="hover:text-indigo-200 transition"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="hover:text-indigo-200 transition"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-indigo-400 text-center text-indigo-200 text-sm">
+                <p>© 2025 PlâtrePro. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuBtn').addEventListener('click', function() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Calculator functionality
+        document.getElementById('calculerPlatre').addEventListener('click', function() {
+            const longueur = parseFloat(document.getElementById('longueur').value) || 0;
+            const largeur = parseFloat(document.getElementById('largeur').value) || 0;
+            const hauteur = parseFloat(document.getElementById('hauteur').value) || 0;
+            const epaisseur = parseFloat(document.getElementById('epaisseur').value);
+            const typeSurface = document.getElementById('typeSurface').value;
+            const angle = document.getElementById('angle').checked;
+            
+            let surface;
+            if (typeSurface === 'mur') {
+                surface = (longueur * hauteur) * 2 + (largeur * hauteur) * 2;
+            } else {
+                surface = longueur * largeur;
+            }
+            
+            // Adjust for angles
+            if (angle) {
+                surface *= 1.15; // 15% more for complex angles
+            }
+            
+            // Calculate plaster needed (kg per m² per cm of thickness)
+            const quantitePlatre = surface * epaisseur * 1.2; // 1.2 kg per m² per cm
+            
+            // Estimate time (hours)
+            let tempsEstime = surface * 0.2; // 0.2 hours per m²
+            if (angle) {
+                tempsEstime *= 1.3;
+            }
+            
+            // Display results
+            document.getElementById('surfaceTotale').textContent = surface.toFixed(2) + ' m²';
+            document.getElementById('quantitePlatre').textContent = Math.ceil(quantitePlatre) + ' kg';
+            document.getElementById('tempsEstime').textContent = Math.ceil(tempsEstime) + ' h';
+            
+            // Recommendation
+            let recommandation = '';
+            if (quantitePlatre < 25) {
+                recommandation = 'Sacs de 5 kg recommandés';
+            } else if (quantitePlatre < 50) {
+                recommandation = 'Sacs de 10 kg recommandés';
+            } else {
+                recommandation = 'Sacs de 25 kg recommandés';
+            }
+            document.getElementById('recommandation').textContent = recommandation;
+            
+            // Show results
+            document.getElementById('resultatsPlatre').classList.remove('hidden');
+            
+            // Add to invoice items if not already there
+            addPlasterToInvoice(surface, quantitePlatre);
+        });
+
+        function addPlasterToInvoice(surface, quantitePlatre) {
+            const itemsTable = document.getElementById('itemsTable');
+            let alreadyExists = false;
+            
+            // Check if plaster item already exists
+            itemsTable.querySelectorAll('tr').forEach(row => {
+                if (row.querySelector('.item-description').textContent.includes('Plâtre')) {
+                    alreadyExists = true;
+                }
+            });
+            
+            if (!alreadyExists) {
+                const newRow = document.createElement('tr');
+                newRow.className = 'border-b border-gray-200';
+                newRow.innerHTML = `
+                    <td class="py-3 px-4 item-description">Plâtre pour ${surface.toFixed(2)} m²</td>
+                    <td class="py-3 px-4"><input type="number" class="item-quantity w-16 px-2 py-1 border rounded" value="${Math.ceil(quantitePlatre)}" min="1"></td>
+                    <td class="py-3 px-4"><input type="number" class="item-price w-20 px-2 py-1 border rounded" value="8.80" min="0" step="0.01"></td>
+                    <td class="py-3 px-4 item-total">${(Math.ceil(quantitePlatre) * 8.80).toFixed(2)} MAD</td>
+                    <td class="py-3 px-4"><button class="remove-item text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button></td>
+                `;
+                itemsTable.appendChild(newRow);
+                
+                // Add event listeners to new row
+                addItemEventListeners(newRow);
+                
+                // Update totals
+                updateInvoiceTotals();
+            }
+        }
+
+        // Invoice functionality
+        let itemCount = 0;
+        
+        // Add item button
+        document.getElementById('addItem').addEventListener('click', function() {
+            itemCount++;
+            const itemsTable = document.getElementById('itemsTable');
+            
+            const newRow = document.createElement('tr');
+            newRow.className = 'border-b border-gray-200';
+            newRow.innerHTML = `
+                <td class="py-3 px-4"><input type="text" class="item-description w-full px-2 py-1 border rounded" placeholder="Description"></td>
+                <td class="py-3 px-4"><input type="number" class="item-quantity w-16 px-2 py-1 border rounded" value="1" min="1"></td>
+                <td class="py-3 px-4"><input type="number" class="item-price w-20 px-2 py-1 border rounded" value="0.00" min="0" step="0.01"></td>
+                <td class="py-3 px-4 item-total">0.00 MAD</td>
+                <td class="py-3 px-4"><button class="remove-item text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button></td>
+            `;
+            itemsTable.appendChild(newRow);
+            
+            // Add event listeners to new row
+            addItemEventListeners(newRow);
+        });
+        
+        function addItemEventListeners(row) {
+            // Quantity and price change listeners
+            const quantityInput = row.querySelector('.item-quantity');
+            const priceInput = row.querySelector('.item-price');
+            
+            const updateItemTotal = () => {
+                const quantity = parseFloat(quantityInput.value) || 0;
+                const price = parseFloat(priceInput.value) || 0;
+                const total = quantity * price;
+                row.querySelector('.item-total').textContent = total.toFixed(2) + ' MAD';
+                updateInvoiceTotals();
+            };
+            
+            quantityInput.addEventListener('change', updateItemTotal);
+            priceInput.addEventListener('change', updateItemTotal);
+            
+            // Remove item button
+            row.querySelector('.remove-item').addEventListener('click', function() {
+                row.remove();
+                updateInvoiceTotals();
+            });
+        }
+        
+        function updateInvoiceTotals() {
+            let subtotal = 0;
+            
+            document.querySelectorAll('#itemsTable tr').forEach(row => {
+                const totalText = row.querySelector('.item-total').textContent;
+                const totalValue = parseFloat(totalText.replace(' MAD', '')) || 0;
+                subtotal += totalValue;
+            });
+            
+            // Apply discount
+            const discountPercent = parseFloat(document.getElementById('remise').value) || 0;
+            const discountAmount = subtotal * (discountPercent / 100);
+            const subtotalAfterDiscount = subtotal - discountAmount;
+            
+            // Calculate VAT
+            const vatRate = parseFloat(document.getElementById('tva').value) || 0;
+            const vatAmount = subtotalAfterDiscount * (vatRate / 100);
+            
+            // Calculate total
+            const total = subtotalAfterDiscount + vatAmount;
+            
+            // Update display
+            document.getElementById('totalTTC').textContent = total.toFixed(2) + ' MAD';
+        }
+        
+        // Add listeners for discount and VAT changes
+        document.getElementById('remise').addEventListener('change', updateInvoiceTotals);
+        document.getElementById('tva').addEventListener('change', updateInvoiceTotals);
+        
+        // Generate invoice
+        document.getElementById('genererFacture').addEventListener('click', function() {
+            // Get client info
+            const clientNom = document.getElementById('clientNom').value || 'Non spécifié';
+            const clientTel = document.getElementById('clientTel').value || '-';
+            const clientEmail = document.getElementById('clientEmail').value || '-';
+            const clientAdresse = document.getElementById('clientAdresse').value || '-';
+            
+            // Set invoice info
+            const now = new Date();
+            document.getElementById('factureNumero').textContent = 'F' + now.getFullYear() + (now.getMonth() + 1).toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0') + '-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            document.getElementById('factureDate').textContent = now.toLocaleDateString('fr-FR');
+            
+            // Set client info
+            document.getElementById('factureClientNom').textContent = clientNom;
+            document.getElementById('factureClientAdresse').textContent = clientAdresse;
+            document.getElementById('factureClientContact').textContent = `Tél: ${clientTel} | Email: ${clientEmail}`;
+            document.getElementById('factureAdresseProjet').textContent = clientAdresse;
+            
+            // Add items
+            const factureItems = document.getElementById('factureItems');
+            factureItems.innerHTML = '';
+            
+            let subtotal = 0;
+            document.querySelectorAll('#itemsTable tr').forEach(row => {
+                const description = row.querySelector('.item-description').value || row.querySelector('.item-description').textContent;
+                const quantity = row.querySelector('.item-quantity').value;
+                const price = row.querySelector('.item-price').value;
+                const total = (parseFloat(quantity) * parseFloat(price)).toFixed(2);
+                subtotal += parseFloat(total);
+                
+                const itemRow = document.createElement('tr');
+                itemRow.className = 'border-b border-gray-200';
+                itemRow.innerHTML = `
+                    <td class="py-3 px-4">${description}</td>
+                    <td class="py-3 px-4 text-right">${quantity}</td>
+                    <td class="py-3 px-4 text-right">${parseFloat(price).toFixed(2)} MAD</td>
+                    <td class="py-3 px-4 text-right">${total} MAD</td>
+                `;
+                factureItems.appendChild(itemRow);
+            });
+            
+            // Calculate totals
+            const discountPercent = parseFloat(document.getElementById('remise').value) || 0;
+            const discountAmount = subtotal * (discountPercent / 100);
+            const subtotalAfterDiscount = subtotal - discountAmount;
+            
+            const vatRate = parseFloat(document.getElementById('tva').value) || 0;
+            const vatAmount = subtotalAfterDiscount * (vatRate / 100);
+            const total = subtotalAfterDiscount + vatAmount;
+            
+            // Update invoice totals
+            document.getElementById('factureTotalHT').textContent = subtotal.toFixed(2) + ' MAD';
+            document.getElementById('factureRemise').textContent = discountAmount.toFixed(2) + ' MAD';
+            document.getElementById('factureTauxTVA').textContent = vatRate;
+            document.getElementById('factureTVA').textContent = vatAmount.toFixed(2) + ' MAD';
+            document.getElementById('factureTotalTTC').textContent = total.toFixed(2) + ' MAD';
+            
+            // Show invoice preview
+            document.getElementById('facturePreview').classList.remove('hidden');
+            
+            // Scroll to invoice
+            document.getElementById('facturePreview').scrollIntoView({ behavior: 'smooth' });
+            
+            // Add print button if not already there
+            if (!document.getElementById('printBtn')) {
+                const printBtn = document.createElement('button');
+                printBtn.id = 'printBtn';
+                printBtn.className = 'no-print fixed bottom-6 right-6 gradient-bg text-white px-6 py-3 rounded-full font-medium hover:opacity-90 transition shadow-lg flex items-center';
+                printBtn.innerHTML = '<i class="fas fa-print mr-2"></i> Imprimer';
+                printBtn.addEventListener('click', function() {
+                    window.print();
+                });
+                document.body.appendChild(printBtn);
+            }
+        });
+        
+        // New invoice button
+        document.getElementById('nouvelleFacture').addEventListener('click', function() {
+            // Clear form
+            document.getElementById('clientNom').value = '';
+            document.getElementById('clientTel').value = '';
+            document.getElementById('clientEmail').value = '';
+            document.getElementById('clientAdresse').value = '';
+            document.getElementById('itemsTable').innerHTML = '';
+            document.getElementById('remise').value = '0';
+            document.getElementById('tva').value = '20';
+            document.getElementById('totalTTC').textContent = '0.00 MAD';
+            document.getElementById('facturePreview').classList.add('hidden');
+            
+            // Remove print button if exists
+            const printBtn = document.getElementById('printBtn');
+            if (printBtn) {
+                printBtn.remove();
+            }
+        });
+        
+        // Save project
+        document.getElementById('enregistrerProjet').addEventListener('click', function() {
+            const clientNom = document.getElementById('clientNom').value;
+            const surfaceTotale = document.getElementById('surfaceTotale').textContent;
+            const totalTTC = document.getElementById('totalTTC').textContent;
+            
+            if (!clientNom) {
+                alert('Veuillez entrer un nom de client');
+                return;
+            }
+            
+            if (totalTTC === '0.00 MAD') {
+                alert('Veuillez ajouter des articles à la facture');
+                return;
+            }
+            
+            const now = new Date();
+            const historyTable = document.getElementById('historyTable');
+            
+            // Remove "no projects" message if it exists
+            if (historyTable.querySelector('td[colspan="5"]')) {
+                historyTable.innerHTML = '';
+            }
+            
+            const newRow = document.createElement('tr');
+            newRow.className = 'border-b border-gray-200 hover:bg-gray-50';
+            newRow.innerHTML = `
+                <td class="py-3 px-4">${now.toLocaleDateString('fr-FR')}</td>
+                <td class="py-3 px-4">${clientNom}</td>
+                <td class="py-3 px-4">${surfaceTotale}</td>
+                <td class="py-3 px-4">${totalTTC}</td>
+                <td class="py-3 px-4">
+                    <button class="view-project text-indigo-600 hover:text-indigo-800 mr-3"><i class="fas fa-eye"></i></button>
+                    <button class="delete-project text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            `;
+            historyTable.appendChild(newRow);
+            
+            // Add event listeners
+            newRow.querySelector('.view-project').addEventListener('click', function() {
+                alert('Visualisation du projet pour ' + clientNom);
+            });
+            
+            newRow.querySelector('.delete-project').addEventListener('click', function() {
+                if (confirm('Supprimer ce projet ?')) {
+                    newRow.remove();
+                    
+                    // Add "no projects" message if table is empty
+                    if (historyTable.querySelectorAll('tr').length === 0) {
+                        const messageRow = document.createElement('tr');
+                        messageRow.innerHTML = '<td colspan="5" class="py-4 text-center text-gray-500">Aucun projet enregistré</td>';
+                        historyTable.appendChild(messageRow);
+                    }
+                }
+            });
+            
+            alert('Projet enregistré avec succès !');
+        });
+    </script>
+</body>
+</html>
